@@ -67,3 +67,11 @@ body {
 
     cursor: grab;
 }
+
+.message-container {
+    border: 1px solid blue;
+
+    width: flex;
+    height: 2rem;
+    text-align: center;
+}

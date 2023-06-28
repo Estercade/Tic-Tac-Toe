@@ -4,8 +4,8 @@ const playerFactory = function(name, marker) {
     return { name, marker }
 }
 
-const player1 = playerFactory("player1", "X");
-const player2 = playerFactory("player2", "O");
+const player1 = playerFactory("Player 1", "X");
+const player2 = playerFactory("Player 2", "O");
 
 const turnHandler = (function() {
     let currentPlayer = player1;
@@ -14,6 +14,7 @@ const turnHandler = (function() {
     function changeTurn() {
         currentPlayer === player1 ? currentPlayer = player2 : currentPlayer = player1;
         turnCounter++;
+        messageHandler.displayMessage(`It is currently ${currentPlayer.name}'s turn.`)
     }
 
     function resetTurns(e) {
@@ -65,8 +66,8 @@ const gameboardHandler = (function() {
             let gameboardLocation = e.target.id.substring(15);
             gamestate[gameboardLocation] = currentPlayerMarker;
             e.target.innerText = currentPlayerMarker;
-            _checkGamestate();
             dispatchEvent(markerPlacedEvent);
+            _checkGamestate();
         }
     }
 
@@ -80,6 +81,7 @@ const gameboardHandler = (function() {
         }
         render();
         dispatchEvent(restartGameEvent);
+        messageHandler.displayMessage(`It is currently ${turnHandler.currentTurn().name}'s turn.`);
     }
 
     const restartButton = document.getElementById("restart-button");
@@ -89,26 +91,33 @@ const gameboardHandler = (function() {
         gamestate.fill("", 0);
     }
 
-    function _checkGamestate() {
-        let winner;
-        
+    function _checkGamestate() {        
         // Check for diagonal win
         if (gamestate[0] !== "" && gamestate[0] == gamestate[4] && gamestate[0] == gamestate[8]) {
-            decideWinner(gamestate[0]);
+            _decideWinner(gamestate[0]);
+            return;
         } else if (gamestate[2] !== "" && gamestate[2] == gamestate[4] && gamestate[0] == gamestate[6]) {
-            decideWinner(gamestate[0]);
+            _decideWinner(gamestate[0]);
+            return;
         }
 
-        // Check for horizontal and vertical win
-        for (let i = 0; i < 7; i++) {
+        // Check for horizontal win
+        for (let i = 0; i < 7; i += 3) {
             if (gamestate[i] == "") {
                 continue;
             } else if (gamestate[i] == gamestate[i+1] && gamestate[i] == gamestate[i+2]) {
-                decideWinner(gamestate[i]);
-                break;
+                _decideWinner(gamestate[i]);
+                return;
+            }
+        }
+        
+        // Check for vertical win
+        for (let i = 0; i < 3; i++) {
+            if (gamestate[i] == "") {
+                continue;
             } else if (gamestate[i] == gamestate[i+3] && gamestate[i] == gamestate[i+6]) {
-                decideWinner(gamestate[i]);
-                break;
+                _decideWinner(gamestate[i]);
+                return;
             }
         }
 
@@ -118,20 +127,34 @@ const gameboardHandler = (function() {
         }
     }
 
-    function decideWinner(marker) {
+    function _decideWinner(marker) {
+        _freezeMarkerPlacement();
         if (marker == player1.marker) {
-            console.log(`${player1.name} wins!`)
+            messageHandler.displayMessage(`Congratulations! ${player1.name} wins!`);
         } else {
-            console.log(`${player2.name} wins!`)
+            messageHandler.displayMessage(`Congratulations! ${player2.name} wins!`);
         }
+    }
+
+    function _freezeMarkerPlacement() {
+        let gameboardSquares = document.querySelectorAll(".gameboard-square");
+        gameboardSquares.forEach(element => element.removeEventListener('click', _placeMarker));
     }
 
     return { render, clearGameboard };
 })();
 
-(function() {
-    window.addEventListener("markerPlaced", turnHandler.changeTurn);
+const messageHandler = (function(){
+    const messageContainer = document.querySelector(".message-container");
 
+    function displayMessage(message) {
+        messageContainer.innerText = message;
+    }
+    
+    return { displayMessage }
+})();
+
+(function() {
     window.addEventListener("markerPlaced", turnHandler.changeTurn);
     
     window.addEventListener("restartGame", turnHandler.resetTurns);
