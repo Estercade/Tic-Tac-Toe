@@ -3,20 +3,55 @@
     margin: 0;
 }
 
-#gameboard-container {
+body {
+    font-family: sans-serif;
 
+    display: flex;
+    flex-direction: column;
+    
+    padding: 1rem;
+}
+
+.marker-selector {
+    display: flex;
+    align-self: center;
+}
+
+.marker-selector span {
+    width: 5rem;
+    border: 2px solid black;
+    border-radius: 0.3rem;
+    padding: 0.2rem;
+    margin: 0 1rem;
+
+    text-align: center;
+    
+}
+
+#gameboard-container {
+    flex: 1;
+
+    align-self: center;
+    /* position: fixed;
+    left: calc(50% - (15rem + 6px)/2);
+    top: 5rem; */
+
+    margin: 1rem;
 }
 
 #gameboard {
-    background-color: black;
+
     display: grid;
     grid-template-columns: 5rem 5rem 5rem;
     grid-template-rows: 5rem 5rem 5rem;
 
-    width: calc(15rem + 6px);
-    grid-gap: 3px;
+    width: calc(15rem + 8px);
+
+    background-color: black;
+    grid-gap: 4px;
 
     list-style-type: none;
+    font-size: 3rem;
 }
 
 .gameboard-square {
@@ -30,6 +65,5 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 3rem;
-
+    cursor: grab;
 }
