@@ -1,0 +1,79 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: 5rem 5rem 5rem;
+    grid-template-rows: 5rem 5rem 5rem;
+
+    list-style-type: none;
+}
+
+/* Tic tac toe board borders */
+#gameboard li:nth-child(1) {
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+
+}
+
+#gameboard li:nth-child(2) {
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+
+}
+
+#gameboard li:nth-child(3) {
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+}
+
+#gameboard li:nth-child(4) {
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+#gameboard li:nth-child(5) {
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+}
+
+#gameboard li:nth-child(6) {
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+}
+
+#gameboard li:nth-child(7) {
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+}
+
+#gameboard li:nth-child(8) {
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+    border-left: 3px solid black;
+}
+
+#gameboard li:nth-child(9) {
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+}
+
+.gameboard-square {
+    /* border: 1px solid blue; */
+    height: 5rem;
+    width: 5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 3rem;
+
+}
