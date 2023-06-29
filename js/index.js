@@ -36,7 +36,8 @@ const turnHandler = (function() {
 })();
 
 const gameboardHandler = (function() {
-    let gamestate = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+    let gamestate = new Array(9);
+    gamestate.fill("", 0);
 
     const gameboard = document.getElementById("gameboard");
     const template = document.getElementById("gameboard-square-template");
@@ -96,7 +97,7 @@ const gameboardHandler = (function() {
         if (gamestate[0] !== "" && gamestate[0] == gamestate[4] && gamestate[0] == gamestate[8]) {
             _decideWinner(gamestate[0]);
             return;
-        } else if (gamestate[2] !== "" && gamestate[2] == gamestate[4] && gamestate[0] == gamestate[6]) {
+        } else if (gamestate[2] !== "" && gamestate[2] == gamestate[4] && gamestate[2] == gamestate[6]) {
             _decideWinner(gamestate[0]);
             return;
         }
