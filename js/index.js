@@ -123,8 +123,8 @@ const gameboardHandler = (function() {
         }
 
         // If board is filled, declare a tie
-        if (turnHandler.turnCount() == 9) {
-            console.log("Tie!");
+        if (turnHandler.turnCount() == 10) {
+            messageHandler.displayMessage(`It's a tie!`)
         }
     }
 
