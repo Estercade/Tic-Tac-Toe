@@ -4,8 +4,25 @@ const playerFactory = function(name, marker) {
     return { name, marker }
 }
 
-const player1 = playerFactory("Player 1", "X");
-const player2 = playerFactory("Player 2", "O");
+var player1 = playerFactory("Player 1", "X");
+var player2 = playerFactory("Player 2", "O");
+
+(function() {
+    const playerRenameInputFields = document.querySelectorAll(".player-rename-input");
+    
+    // window[element.id.substring(0, 7)] returns 
+    // the player number for that input field
+    playerRenameInputFields.forEach(element => element.placeholder = window[element.id.substring(0, 7)].name);
+    playerRenameInputFields.forEach(element => element.addEventListener("focusout", updatePlayer));
+
+    function updatePlayer(e) {
+        if (e.target.value) {
+            window[e.target.id.substring(0, 7)].name = e.target.value;
+        }
+        e.target.value = "";
+        e.target.placeholder = window[e.target.id.substring(0, 7)].name;
+    }
+})();
 
 const turnHandler = (function() {
     let currentPlayer = player1;
