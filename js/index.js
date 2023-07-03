@@ -7,14 +7,18 @@ const playerFactory = function(name, marker) {
 var player1 = playerFactory("Player 1", "X");
 var player2 = playerFactory("Player 2", "O");
 
+// Handles player renaming
 (function() {
     const playerRenameInputFields = document.querySelectorAll(".player-rename-input");
     
     // window[element.id.substring(0, 7)] returns 
     // the player number for that input field
+    // i.e. first input field is for renaming player1
     playerRenameInputFields.forEach(element => element.placeholder = window[element.id.substring(0, 7)].name);
     playerRenameInputFields.forEach(element => element.addEventListener("focusout", updatePlayer));
 
+    // Updates player name to the input then 
+    // clears input field
     function updatePlayer(e) {
         if (e.target.value) {
             window[e.target.id.substring(0, 7)].name = e.target.value;
@@ -24,6 +28,7 @@ var player2 = playerFactory("Player 2", "O");
     }
 })();
 
+// Stores and updates turn order
 const turnHandler = (function() {
     let currentPlayer = player1;
     let turnCounter = 1;
@@ -52,6 +57,8 @@ const turnHandler = (function() {
     return { changeTurn, resetTurns, currentTurn, turnCount };
 })();
 
+// Stores, updates, and checks current gamestate,
+// renders gameboard
 const gameboardHandler = (function() {
     let gamestate = new Array(9);
     gamestate.fill("", 0);
@@ -110,16 +117,16 @@ const gameboardHandler = (function() {
     }
 
     function _checkGamestate() {        
-        // Check for diagonal win
+        // Checks for diagonal win
         if (gamestate[0] !== "" && gamestate[0] == gamestate[4] && gamestate[0] == gamestate[8]) {
             _decideWinner(gamestate[0]);
             return;
         } else if (gamestate[2] !== "" && gamestate[2] == gamestate[4] && gamestate[2] == gamestate[6]) {
-            _decideWinner(gamestate[0]);
+            _decideWinner(gamestate[2]);
             return;
         }
 
-        // Check for horizontal win
+        // Checks for horizontal win
         for (let i = 0; i < 7; i += 3) {
             if (gamestate[i] == "") {
                 continue;
@@ -129,7 +136,7 @@ const gameboardHandler = (function() {
             }
         }
         
-        // Check for vertical win
+        // Checks for vertical win
         for (let i = 0; i < 3; i++) {
             if (gamestate[i] == "") {
                 continue;
@@ -139,7 +146,7 @@ const gameboardHandler = (function() {
             }
         }
 
-        // If board is filled, declare a tie
+        // If board is filled, declares a tie
         if (turnHandler.turnCount() == 10) {
             messageHandler.displayMessage(`It's a tie!`)
         }
@@ -162,6 +169,7 @@ const gameboardHandler = (function() {
     return { render, clearGameboard };
 })();
 
+// Updates the message container
 const messageHandler = (function(){
     const messageContainer = document.querySelector(".message-container");
 
@@ -172,6 +180,7 @@ const messageHandler = (function(){
     return { displayMessage }
 })();
 
+// Binds global event listeners
 (function() {
     window.addEventListener("markerPlaced", turnHandler.changeTurn);
     
